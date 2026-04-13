@@ -19,7 +19,7 @@ function createPrismaClient() {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const client = new (PrismaClient as any)({
-    datasourceUrl: datasourceUrl || "prisma://accelerate.prisma-client-fallback.com/?api_key=fallback",
+    ...(datasourceUrl ? { accelerateUrl: datasourceUrl } : { accelerateUrl: "prisma://accelerate.prisma-client-fallback.com/?api_key=fallback" }),
     log:
       process.env.NODE_ENV === "development"
         ? ["query", "error", "warn"]
