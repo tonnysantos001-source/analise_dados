@@ -12,13 +12,14 @@ const globalForPrisma = globalThis as unknown as {
 
 function createPrismaClient() {
   const datasourceUrl = process.env.DATABASE_URL;
+
   if (!datasourceUrl) {
-    throw new Error("DATABASE_URL não está definida no .env");
+    console.warn("Aviso: DATABASE_URL não está definida. O banco de dados pode falhar ao ser acessado.");
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const client = new (PrismaClient as any)({
-    datasourceUrl,
+    ...(datasourceUrl ? { datasourceUrl } : {}),
     log:
       process.env.NODE_ENV === "development"
         ? ["query", "error", "warn"]
