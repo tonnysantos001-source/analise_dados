@@ -14,12 +14,12 @@ function createPrismaClient() {
   const datasourceUrl = process.env.DATABASE_URL;
 
   if (!datasourceUrl) {
-    console.warn("Aviso: DATABASE_URL não está definida. O banco de dados pode falhar ao ser acessado.");
+    console.warn("Aviso: DATABASE_URL não está definida. Usando fallback para o PrismaClient durante a build.");
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const client = new (PrismaClient as any)({
-    ...(datasourceUrl ? { datasourceUrl } : {}),
+    datasourceUrl: datasourceUrl || "prisma://accelerate.prisma-client-fallback.com/?api_key=fallback",
     log:
       process.env.NODE_ENV === "development"
         ? ["query", "error", "warn"]
